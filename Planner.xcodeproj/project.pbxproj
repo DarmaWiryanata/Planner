@@ -8,17 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		FA9AE33227FDCF64004956D7 /* PlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE33127FDCF64004956D7 /* PlannerApp.swift */; };
-		FA9AE33427FDCF64004956D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE33327FDCF64004956D7 /* ContentView.swift */; };
 		FA9AE33627FDCF65004956D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9AE33527FDCF65004956D7 /* Assets.xcassets */; };
 		FA9AE33927FDCF65004956D7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9AE33827FDCF65004956D7 /* Preview Assets.xcassets */; };
+		FA9AE34327FDCF96004956D7 /* PlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34227FDCF96004956D7 /* PlannerView.swift */; };
+		FA9AE34527FDD066004956D7 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34427FDD066004956D7 /* Plan.swift */; };
+		FA9AE34727FDD09C004956D7 /* PlanListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34627FDD09C004956D7 /* PlanListView.swift */; };
+		FA9AE34927FDD688004956D7 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34827FDD688004956D7 /* PlanViewModel.swift */; };
+		FA9AE34B27FDDE6A004956D7 /* DetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34A27FDDE6A004956D7 /* DetailSheet.swift */; };
+		FA9AE34E27FDE131004956D7 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AE34D27FDE131004956D7 /* Checkbox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FA9AE32E27FDCF64004956D7 /* Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Planner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9AE33127FDCF64004956D7 /* PlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerApp.swift; sourceTree = "<group>"; };
-		FA9AE33327FDCF64004956D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FA9AE33527FDCF65004956D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA9AE33827FDCF65004956D7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FA9AE34227FDCF96004956D7 /* PlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerView.swift; sourceTree = "<group>"; };
+		FA9AE34427FDD066004956D7 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		FA9AE34627FDD09C004956D7 /* PlanListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListView.swift; sourceTree = "<group>"; };
+		FA9AE34827FDD688004956D7 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
+		FA9AE34A27FDDE6A004956D7 /* DetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSheet.swift; sourceTree = "<group>"; };
+		FA9AE34D27FDE131004956D7 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +61,10 @@
 		FA9AE33027FDCF64004956D7 /* Planner */ = {
 			isa = PBXGroup;
 			children = (
+				FA9AE34127FDCF80004956D7 /* Models */,
+				FA9AE34027FDCF78004956D7 /* ViewModels */,
+				FA9AE33F27FDCF6E004956D7 /* Views */,
 				FA9AE33127FDCF64004956D7 /* PlannerApp.swift */,
-				FA9AE33327FDCF64004956D7 /* ContentView.swift */,
 				FA9AE33527FDCF65004956D7 /* Assets.xcassets */,
 				FA9AE33727FDCF65004956D7 /* Preview Content */,
 			);
@@ -65,6 +77,41 @@
 				FA9AE33827FDCF65004956D7 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FA9AE33F27FDCF6E004956D7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA9AE34C27FDE120004956D7 /* Components */,
+				FA9AE34227FDCF96004956D7 /* PlannerView.swift */,
+				FA9AE34627FDD09C004956D7 /* PlanListView.swift */,
+				FA9AE34A27FDDE6A004956D7 /* DetailSheet.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA9AE34027FDCF78004956D7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FA9AE34827FDD688004956D7 /* PlanViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FA9AE34127FDCF80004956D7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA9AE34427FDD066004956D7 /* Plan.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FA9AE34C27FDE120004956D7 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FA9AE34D27FDE131004956D7 /* Checkbox.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +184,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA9AE33427FDCF64004956D7 /* ContentView.swift in Sources */,
 				FA9AE33227FDCF64004956D7 /* PlannerApp.swift in Sources */,
+				FA9AE34327FDCF96004956D7 /* PlannerView.swift in Sources */,
+				FA9AE34B27FDDE6A004956D7 /* DetailSheet.swift in Sources */,
+				FA9AE34527FDD066004956D7 /* Plan.swift in Sources */,
+				FA9AE34E27FDE131004956D7 /* Checkbox.swift in Sources */,
+				FA9AE34727FDD09C004956D7 /* PlanListView.swift in Sources */,
+				FA9AE34927FDD688004956D7 /* PlanViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
