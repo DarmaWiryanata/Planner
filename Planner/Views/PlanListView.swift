@@ -8,22 +8,24 @@
 import SwiftUI
 
 struct PlanListView: View {
-        
+    
+    @EnvironmentObject var planViewModel: PlanViewModel
     let plan: Plan
     
     var body: some View {
         NavigationLink(destination: Text("Abc")) {
             HStack {
-                Image(systemName: "checkmark.circle.fill")
+                Image(systemName: plan.isCompleted ? "checkmark.circle.fill" : "circle")
                     .onTapGesture {
-                        withAnimation(.linear) {}
+                        withAnimation(.easeOut) {
+                            planViewModel.updatePlan(plan: plan)
+                        }
                     }
+                    .foregroundColor(plan.isCompleted ? .blue : .gray)
+                
+                
                 VStack {
                     Text(plan.title)
-//                    if plan.date? != nil {
-//                        Text(plan.time? != nil ? "\(plan.date?) - \(plan.time?)" : plan.date?)
-//                    }
-                    
                 }
             }
         }

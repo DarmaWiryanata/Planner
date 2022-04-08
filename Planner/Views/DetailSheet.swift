@@ -11,24 +11,26 @@ struct DetailSheet: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var planViewModel: PlanViewModel
-    @State var title: String
-    @State var date: Date = Date()
-    @State var note: String = "Full note"
-    @State var isCompleted: Bool = false
+    
+    @State var plan: Plan
+    func printPlan() {
+        print(plan)
+    }
     
     var body: some View {
         NavigationView {
-            ScrollView{
-                DetailSheetForm(title: $title, isCompleted: $isCompleted, date: $date, note: $note)
-            }
+//            ScrollView {
+                Text("abc")
+//            }
             
-                .navigationTitle(title)
+                .navigationTitle(plan.title)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(
                     leading: Button("Cancel") {
                         presentationMode.wrappedValue.dismiss()
                     },
                     trailing: Button {
+                        printPlan()
                         presentationMode.wrappedValue.dismiss()
                     } label: {
                         Text("Done")
@@ -52,7 +54,7 @@ struct DetailSheet: View {
     }
     
     func saveButtonPressed() {
-        planViewModel.createItem(title: title, date: date, time: date, note: note, isCompleted: isCompleted)
+//        planViewModel.createPlan(title: title)
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -60,7 +62,7 @@ struct DetailSheet: View {
 
 struct DetailSheet_Previews: PreviewProvider {
     static var previews: some View {
-        DetailSheet(title: "Example", date: Date(), note: "Note", isCompleted: false)
+        DetailSheet(plan: Plan(id: "1", title: "Abc", date: Date(), note: "Def", isCompleted: false))
     }
 }
 

@@ -11,14 +11,15 @@ struct PlannerView: View {
     
     @EnvironmentObject var planViewModel: PlanViewModel
     @State var showSheet: Bool = false
+    @State var plan: Plan?
     
     var body: some View {
         NavigationView {
             ZStack {
-                if planViewModel.items.isEmpty {
-                    Text("No items")
+                if planViewModel.plans.isEmpty {
+                    Text("No items available")
                 } else {
-                    List(planViewModel.items) { item in
+                    List(planViewModel.plans) { item in
                         PlanListView(plan: item)
                     }
                 }
@@ -29,20 +30,25 @@ struct PlannerView: View {
                 leading: EditButton(),
                 trailing:
                     Button("Add") {
-                         showSheet.toggle()
+                        createPlan()
                     }
             )
             .sheet(isPresented: $showSheet) {
-                DetailSheet(title: "New plan", date: Date(), note: "Note", isCompleted: false)
+                DetailSheet(plan: plan ?? Plan(id: "1", title: "Abc", date: Date(), note: "", isCompleted: false))
             }
         }
+    }
+    
+    func createPlan() {
+        plan = planViewModel.createPlan(title: "New plan")
+        showSheet.toggle()
     }
     
 }
 
 struct PlannerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlannerView()
+        PlannerView(plan: Plan(id: "1", title: "Abc", date: Date(), note: "", isCompleted: false))
             .environmentObject(PlanViewModel())
     }
 }
