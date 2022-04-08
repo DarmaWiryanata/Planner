@@ -12,15 +12,23 @@ struct PlannerView: View {
     @EnvironmentObject var planViewModel: PlanViewModel
     @State var showSheet: Bool = false
     @State var plan: Plan?
-    
+    @State private var deleteAction = false
+
     var body: some View {
         NavigationView {
             ZStack {
                 if planViewModel.plans.isEmpty {
                     Text("No items available")
                 } else {
-                    List(planViewModel.plans) { item in
-                        PlanListView(plan: item)
+                    List {
+                        ForEach(planViewModel.plans) { item in
+                            PlanListView(plan: item)
+                                .onTapGesture {
+                                    plan = item
+                                }
+                        }
+                        .onDelete(perform: planViewModel.deletePlan)
+                        .onMove(perform: planViewModel.movePlan)
                     }
                 }
             }
@@ -33,8 +41,8 @@ struct PlannerView: View {
                         createPlan()
                     }
             )
-            .sheet(isPresented: $showSheet) {
-                DetailSheet(plan: plan ?? Plan(id: "1", title: "Abc", date: Date(), note: "", isCompleted: false))
+            .sheet(item: $plan) { item in
+                DetailSheet(id: item.id, title: item.title, date: item.date ?? Date(), note: item.note ?? "", isCompleted: item.isCompleted)
             }
         }
     }
@@ -42,6 +50,10 @@ struct PlannerView: View {
     func createPlan() {
         plan = planViewModel.createPlan(title: "New plan")
         showSheet.toggle()
+    }
+    
+    func deletePlan() {
+        
     }
     
 }

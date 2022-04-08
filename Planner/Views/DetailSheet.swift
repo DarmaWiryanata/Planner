@@ -11,50 +11,79 @@ struct DetailSheet: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var planViewModel: PlanViewModel
+        
+    @State var id: String
+    @State var title: String
+    @State var date: Date
+    @State var note: String
+    @State var isCompleted: Bool
     
-    @State var plan: Plan
-    func printPlan() {
-        print(plan)
-    }
+    @State private var deleteAction = false
     
     var body: some View {
         NavigationView {
-//            ScrollView {
-                Text("abc")
-//            }
-            
-                .navigationTitle(plan.title)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
-                    },
-                    trailing: Button {
-                        printPlan()
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Text("Done")
-                            .bold()
-                    }
-                )
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {}, label: {})
-                    }
-                    
-                    ToolbarItem(placement: .bottomBar) {
-                        Button {
-                        } label: {
-                            Image(systemName: "trash")
-                        }
-
-                    }
+            ZStack {
+                
+                Color(UIColor.systemGray5)
+                
+                ScrollView {
+                    DetailSheetForm(title: $title, isCompleted: $isCompleted, date: $date, note: $note)
                 }
+                
+                    .navigationTitle(title)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarItems(
+                        leading: Button("Cancel") {
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        trailing: Button {
+                            saveButtonPressed()
+                        } label: {
+                            Text("Done")
+                                .bold()
+                        }
+                    )
+                    .toolbar {
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {}, label: {})
+                        }
+                        
+                        ToolbarItem(placement: .bottomBar) {
+                            Button {
+                                deleteAction.toggle()
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                        }
+                }
+                    .actionSheet(isPresented: $deleteAction, content: {
+                        ActionSheet(
+                            title: Text("Delete \"\(title)\"?"),
+                            message: Text("This item will be deleted permanently"),
+                            buttons: [
+                                .destructive(Text("Delete anyway")) {
+                                    deleteButtonPressed(id: id)
+                                },
+                                .cancel()
+                            ]
+                        )
+                    })
+            }
         }
     }
     
+    func printPlan() {
+        print("id: \(id), title: \(title), isCompleted: \(isCompleted), date: \(date), note: \(note)")
+    }
+    
     func saveButtonPressed() {
-//        planViewModel.createPlan(title: title)
+        printPlan()
+        planViewModel.updatePlan(id: id, title: title, date: date, note: note, isCompleted: isCompleted)
+        presentationMode.wrappedValue.dismiss()
+    }
+    
+    func deleteButtonPressed(id: String) {
+        planViewModel.deletePlanById(id: id)
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -62,7 +91,7 @@ struct DetailSheet: View {
 
 struct DetailSheet_Previews: PreviewProvider {
     static var previews: some View {
-        DetailSheet(plan: Plan(id: "1", title: "Abc", date: Date(), note: "Def", isCompleted: false))
+        DetailSheet(id: "1", title: "Abc", date: Date(), note: "Def", isCompleted: true)
     }
 }
 
@@ -73,26 +102,63 @@ struct DetailSheetForm: View {
     @Binding var date: Date
     @Binding var note: String
     
+    
+    func toggle() {
+        isCompleted = !isCompleted
+    }
+    
     var body: some View {
         VStack {
             // Title & checkbox
             HStack {
-                Checkbox(isCompleted: $isCompleted)
-                    .padding(.trailing)
+                Button(action: toggle) {
+                    Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(isCompleted ? .blue : .gray)
+                        .padding(.trailing)
+                }
                 TextField("Type something here...", text: $title)
                     .padding(.horizontal)
                     .frame(height: 55)
-                    .background(Color(UIColor.systemGray4))
-                    .cornerRadius(10)
+                    .background(.white)
+                    .cornerRadius(8)
+                    .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                    .overlay(RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray, lineWidth: 1))
             }
-            .padding(.bottom, 30)
+            .padding(.vertical, 15)
+            .padding(.leading)
             
             // Date & time
-            DatePicker("Date", selection: $date, displayedComponents: [.date])
-            DatePicker("Time", selection: $date, displayedComponents: [.hourAndMinute])
+            DatePicker("Date", selection: $date)
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+                .background(.white)
+                .cornerRadius(8)
+                .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                .padding(.bottom, 15)
             
             // Note
-            TextEditor(text: $note)
+            VStack {
+                Text("Note".uppercased())
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 10)
+                
+                ZStack {
+                    if note.isEmpty {
+                        Text("Give some note...")
+                    }
+                    
+                    TextEditor(text: $note)
+                        .frame(height: 200)
+                        .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                        .cornerRadius(8)
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray, lineWidth: 1))
+                }
+            }
             
         }
         .padding()

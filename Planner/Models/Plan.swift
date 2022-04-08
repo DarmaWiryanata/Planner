@@ -8,11 +8,11 @@
 import Foundation
 
 struct Plan: Identifiable, Codable {
-    let id: String
-    let title: String
-    let date: Date?
-    let note: String?
-    let isCompleted: Bool
+    var id: String
+    var title: String
+    var date: Date?
+    var note: String?
+    var isCompleted: Bool
     
     init(id: String = UUID().uuidString, title: String, date: Date? = nil, note: String? = nil, isCompleted: Bool) {
         self.id = id

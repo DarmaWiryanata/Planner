@@ -31,14 +31,27 @@ class PlanViewModel: ObservableObject {
         
         guard
             let data = UserDefaults.standard.data(forKey: itemsKey),
-            let savedItems = try? JSONDecoder().decode([Plan].self, from: data)
+            var savedItems = try? JSONDecoder().decode([Plan].self, from: data)
         else { return }
         
+        
+        savedItems = savedItems.sorted(by: {
+            $0.date?.compare($1.date ?? Date().addingTimeInterval(60 * 60 * 24 * 30 * 12 * 100)) == .orderedAscending
+        })
         self.plans = savedItems
+        
+        print(savedItems)
     }
     
     func deletePlan(indexSet: IndexSet) {
         plans.remove(atOffsets: indexSet)
+        saveItems()
+    }
+    
+    func deletePlanById(id: String) {
+        if let index = plans.firstIndex(where: { $0.id == id }) {
+            plans.remove(at: index)
+        }
         saveItems()
     }
     
@@ -47,13 +60,19 @@ class PlanViewModel: ObservableObject {
     }
     
     func createPlan(title: String) -> Plan {
-        let newPlan = Plan(title: title, isCompleted: false)
+        let newPlan = Plan(title: title, note: "", isCompleted: false)
         plans.append(newPlan)
         
         return newPlan
     }
     
-    func updatePlan(plan: Plan) {
+    func updatePlan(id: String, title: String, date: Date, note: String, isCompleted: Bool) {
+        if let index = plans.firstIndex(where: { $0.id == id }) {
+            plans[index] = Plan(title: title, date: date, note: note, isCompleted: isCompleted)
+        }
+    }
+    
+    func updateIsCompleted(plan: Plan) {
 //        if let index = items.firstIndex { (existingItem) -> Bool in
 //            return existingItem.id == item.id
 //        } {

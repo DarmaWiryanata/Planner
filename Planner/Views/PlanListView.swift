@@ -18,7 +18,7 @@ struct PlanListView: View {
                 Image(systemName: plan.isCompleted ? "checkmark.circle.fill" : "circle")
                     .onTapGesture {
                         withAnimation(.easeOut) {
-                            planViewModel.updatePlan(plan: plan)
+                            planViewModel.updateIsCompleted(plan: plan)
                         }
                     }
                     .foregroundColor(plan.isCompleted ? .blue : .gray)
