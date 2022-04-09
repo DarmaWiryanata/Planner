@@ -24,13 +24,18 @@ struct PlanListView: View {
                     .foregroundColor(plan.isCompleted ? .blue : .gray)
                 
                 
-                VStack {
+                VStack(alignment: .leading) {
                     Text(plan.title)
+                    
+                    if plan.date != Optional(nil) {
+                        Text("\(plan.date?.formatDate() ?? Date().formatDate())")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
                 }
             }
         }
     }
-    
 }
 
 struct PlanListView_Previews: PreviewProvider {
@@ -39,4 +44,12 @@ struct PlanListView_Previews: PreviewProvider {
         
         PlanListView(plan: plan)
     }
+}
+
+extension Date {
+        func formatDate() -> String {
+                let dateFormatter = DateFormatter()
+            dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
+            return dateFormatter.string(from: self)
+        }
 }

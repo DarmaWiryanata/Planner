@@ -101,7 +101,7 @@ struct DetailSheetForm: View {
     @Binding var isCompleted: Bool
     @Binding var date: Date
     @Binding var note: String
-    
+
     
     func toggle() {
         isCompleted = !isCompleted
