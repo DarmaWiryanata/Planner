@@ -15,10 +15,12 @@ struct DetailSheet: View {
     @State var id: String
     @State var title: String
     @State var date: Date
+    @State var actualDate: Date?
     @State var note: String
     @State var isCompleted: Bool
     
     @State private var deleteAction = false
+    @State private var shareSheet = false
     
     var body: some View {
         NavigationView {
@@ -45,7 +47,14 @@ struct DetailSheet: View {
                     )
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
-                            Button(action: {}, label: {})
+                            Button(
+                                action: {
+                                    shareSheet.toggle()
+                                },
+                                label: {
+                                    Image(systemName: "square.and.arrow.up")
+                                }
+                            )
                         }
                         
                         ToolbarItem(placement: .bottomBar) {
@@ -55,7 +64,7 @@ struct DetailSheet: View {
                                 Image(systemName: "trash")
                             }
                         }
-                }
+                    }
                     .actionSheet(isPresented: $deleteAction, content: {
                         ActionSheet(
                             title: Text("Delete \"\(title)\"?"),
@@ -68,7 +77,16 @@ struct DetailSheet: View {
                             ]
                         )
                     })
+                    .shareSheet(isPresented: $shareSheet, items: ["My next plan is \(title)\(sharePlanItem())"])
             }
+        }
+    }
+    
+    func sharePlanItem() -> String {
+        if actualDate != Optional(nil) {
+            return " at \(date.formatDateTime())"
+        } else {
+            return ""
         }
     }
     

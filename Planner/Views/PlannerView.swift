@@ -10,9 +10,13 @@ import SwiftUI
 struct PlannerView: View {
     
     @EnvironmentObject var planViewModel: PlanViewModel
-    @State private var showSheet: Bool = false
+    
     @State private var plan: Plan?
     @State private var deletePlan: Plan?
+    @State private var sharePlan: Plan?
+    
+    @State private var showSheet: Bool = false
+    @State private var shareSheet = false
 
     var body: some View {
         NavigationView {
@@ -32,6 +36,13 @@ struct PlannerView: View {
                                             plan = item
                                         } label: {
                                             Label("Edit", systemImage: "pencil")
+                                        }
+
+                                        Button {
+                                            sharePlan = item
+                                            shareSheet.toggle()
+                                        } label: {
+                                            Label("Share", systemImage: "square.and.arrow.up")
                                         }
 
                                         Button(role: .destructive) {
@@ -59,7 +70,7 @@ struct PlannerView: View {
                     }
             )
             .sheet(item: $plan) { item in
-                DetailSheet(id: item.id, title: item.title, date: item.date ?? Date(), note: item.note ?? "", isCompleted: item.isCompleted)
+                DetailSheet(id: item.id, title: item.title, date: item.date ?? Date(), actualDate: item.date ?? Optional(nil), note: item.note ?? "", isCompleted: item.isCompleted)
             }
             .actionSheet(item: $deletePlan) { item in
                 ActionSheet(
@@ -73,6 +84,7 @@ struct PlannerView: View {
                     ]
                 )
             }
+            .shareSheet(isPresented: $shareSheet, items: ["My next plan is \(sharePlan?.title ?? "")\(sharePlanItem())"])
         }
     }
     
@@ -83,6 +95,14 @@ struct PlannerView: View {
     
     func deletePlan(id: String) {
         planViewModel.deletePlanById(id: id)
+    }
+    
+    func sharePlanItem() -> String {
+        if sharePlan?.date != Optional(nil) {
+            return " at \(sharePlan?.date?.formatDateTime() ?? "")"
+        } else {
+            return ""
+        }
     }
     
 }
