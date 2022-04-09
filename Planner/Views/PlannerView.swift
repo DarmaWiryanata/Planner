@@ -12,7 +12,7 @@ struct PlannerView: View {
     @EnvironmentObject var planViewModel: PlanViewModel
     @State private var showSheet: Bool = false
     @State private var plan: Plan?
-    @State private var deleteAction = false
+    @State private var deletePlan: Plan?
 
     var body: some View {
         NavigationView {
@@ -27,9 +27,22 @@ struct PlannerView: View {
                                 .onTapGesture {
                                     plan = item
                                 }
+                                .contextMenu {
+                                        Button {
+                                            plan = item
+                                        } label: {
+                                            Label("Edit", systemImage: "pencil")
+                                        }
+
+                                        Button(role: .destructive) {
+                                            deletePlan = item
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
                         }
                         .onDelete(perform: planViewModel.deletePlan)
-                        .onMove(perform: planViewModel.movePlan)
+//                        .onMove(perform: planViewModel.movePlan)
                     }
                     .refreshable {
                         self.planViewModel.getItems()
@@ -48,6 +61,18 @@ struct PlannerView: View {
             .sheet(item: $plan) { item in
                 DetailSheet(id: item.id, title: item.title, date: item.date ?? Date(), note: item.note ?? "", isCompleted: item.isCompleted)
             }
+            .actionSheet(item: $deletePlan) { item in
+                ActionSheet(
+                    title: Text("Delete \"\(item.title)\"?"),
+                    message: Text("This item will be deleted permanently"),
+                    buttons: [
+                        .destructive(Text("Delete anyway")) {
+                            deletePlan(id: item.id)
+                        },
+                        .cancel()
+                    ]
+                )
+            }
         }
     }
     
@@ -56,8 +81,8 @@ struct PlannerView: View {
         showSheet.toggle()
     }
     
-    func deletePlan() {
-        
+    func deletePlan(id: String) {
+        planViewModel.deletePlanById(id: id)
     }
     
 }

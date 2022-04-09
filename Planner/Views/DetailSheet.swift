@@ -30,7 +30,7 @@ struct DetailSheet: View {
                     DetailSheetForm(title: $title, isCompleted: $isCompleted, date: $date, note: $note)
                 }
                 
-                    .navigationTitle(title)
+                    .navigationTitle("Plan Detail")
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarItems(
                         leading: Button("Cancel") {
