@@ -23,6 +23,7 @@ struct PlannerView: View {
                     List {
                         ForEach(planViewModel.plans) { item in
                             PlanListView(plan: item)
+                                .contentShape(Rectangle())
                                 .onTapGesture {
                                     plan = item
                                 }

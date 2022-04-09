@@ -13,27 +13,26 @@ struct PlanListView: View {
     let plan: Plan
     
     var body: some View {
-        NavigationLink(destination: Text("Abc")) {
-            HStack {
-                Image(systemName: plan.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .onTapGesture {
-                        withAnimation(.easeOut) {
-                            planViewModel.updateIsCompleted(plan: plan)
-                        }
-                    }
-                    .foregroundColor(plan.isCompleted ? .blue : .gray)
-                
-                
-                VStack(alignment: .leading) {
-                    Text(plan.title)
-                    
-                    if plan.date != Optional(nil) {
-                        Text("\(plan.date?.formatDate() ?? Date().formatDate())")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+        HStack {
+            Image(systemName: plan.isCompleted ? "checkmark.circle.fill" : "circle")
+                .onTapGesture {
+                    withAnimation(.easeOut) {
+                        planViewModel.updateIsCompleted(plan: plan)
                     }
                 }
+                .foregroundColor(plan.isCompleted ? .blue : .gray)
+            
+            
+            VStack(alignment: .leading) {
+                Text(plan.title)
+                
+                if plan.date != Optional(nil) {
+                    Text("\(plan.date?.formatDate() ?? Date().formatDate())")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

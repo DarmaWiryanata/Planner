@@ -66,12 +66,6 @@ class PlanViewModel: ObservableObject {
     }
     
     func updateIsCompleted(plan: Plan) {
-//        if let index = items.firstIndex { (existingItem) -> Bool in
-//            return existingItem.id == item.id
-//        } {
-//
-//        }
-
         if let index = plans.firstIndex(where: { $0.id == plan.id }) {
             plans[index] = plan.updateCompletion()
         }
