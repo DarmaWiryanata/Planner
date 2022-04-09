@@ -18,9 +18,12 @@ struct DetailSheet: View {
     @State var actualDate: Date?
     @State var note: String
     @State var isCompleted: Bool
+    @State var alertTitle: String = ""
+    @State var alertMessage: String = ""
     
-    @State private var deleteAction = false
-    @State private var shareSheet = false
+    @State private var deleteAction: Bool = false
+    @State private var shareSheet: Bool = false
+    @State private var showAlert: Bool = false
     
     var body: some View {
         NavigationView {
@@ -78,6 +81,7 @@ struct DetailSheet: View {
                         )
                     })
                     .shareSheet(isPresented: $shareSheet, items: ["My next plan is \(title)\(sharePlanItem())"])
+                    .alert(isPresented: $showAlert, content: getAlert)
             }
         }
     }
@@ -95,14 +99,30 @@ struct DetailSheet: View {
     }
     
     func saveButtonPressed() {
-        printPlan()
-        planViewModel.updatePlan(id: id, title: title, date: date, note: note, isCompleted: isCompleted)
-        presentationMode.wrappedValue.dismiss()
+        if textIsAppropriate() {
+            planViewModel.updatePlan(id: id, title: title, date: date, note: note, isCompleted: isCompleted)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
     
     func deleteButtonPressed(id: String) {
         planViewModel.deletePlanById(id: id)
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    func textIsAppropriate() -> Bool {
+        if title.count < 3 {
+            alertTitle = "Title is invalid 😱"
+            alertMessage = "Your to do title must be at least 3 characters long"
+            showAlert.toggle()
+            return false
+        }
+        
+        return true
+    }
+    
+    func getAlert() -> Alert {
+        return Alert(title: Text(alertTitle), message: Text(alertMessage))
     }
     
 }
@@ -136,7 +156,7 @@ struct DetailSheetForm: View {
                         .foregroundColor(isCompleted ? .blue : .gray)
                         .padding(.trailing)
                 }
-                TextField("Type something here...", text: $title)
+                TextField("Title", text: $title)
                     .padding(.horizontal)
                     .frame(height: 55)
                     .background(.white)
