@@ -23,6 +23,6 @@ struct Plan: Identifiable, Codable {
     }
     
     func updateCompletion() -> Plan {
-        return Plan(id: id, title: title, isCompleted: !isCompleted)
+        return Plan(id: id, title: title, date: date, note: note, isCompleted: !isCompleted)
     }
 }
