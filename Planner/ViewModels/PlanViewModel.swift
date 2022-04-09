@@ -22,13 +22,6 @@ class PlanViewModel: ObservableObject {
     }
     
     func getItems() {
-//        let newItems = [
-//            ItemModel(title: "This is the first title!", isCompleted: false),
-//            ItemModel(title: "This is the second!", isCompleted: true),
-//            ItemModel(title: "Third!", isCompleted: false)
-//        ]
-//        items.append(contentsOf: newItems)
-        
         guard
             let data = UserDefaults.standard.data(forKey: itemsKey),
             var savedItems = try? JSONDecoder().decode([Plan].self, from: data)

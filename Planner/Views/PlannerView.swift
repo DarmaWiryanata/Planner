@@ -10,8 +10,8 @@ import SwiftUI
 struct PlannerView: View {
     
     @EnvironmentObject var planViewModel: PlanViewModel
-    @State var showSheet: Bool = false
-    @State var plan: Plan?
+    @State private var showSheet: Bool = false
+    @State private var plan: Plan?
     @State private var deleteAction = false
 
     var body: some View {
@@ -29,6 +29,9 @@ struct PlannerView: View {
                         }
                         .onDelete(perform: planViewModel.deletePlan)
                         .onMove(perform: planViewModel.movePlan)
+                    }
+                    .refreshable {
+                        self.planViewModel.getItems()
                     }
                 }
             }
@@ -60,7 +63,7 @@ struct PlannerView: View {
 
 struct PlannerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlannerView(plan: Plan(id: "1", title: "Abc", date: Date(), note: "", isCompleted: false))
+        PlannerView()
             .environmentObject(PlanViewModel())
     }
 }
