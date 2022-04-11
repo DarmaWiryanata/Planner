@@ -67,28 +67,41 @@ struct PlannerView: View {
                                     plan = item
                                 }
                                 .contextMenu {
-                                        Button {
-                                            plan = item
-                                        } label: {
-                                            Label("Edit", systemImage: "pencil")
-                                        }
+                                    Button {
+                                        plan = item
+                                    } label: {
+                                        Label("Edit", systemImage: "pencil")
+                                    }
 
-                                        Button {
-                                            sharePlan = item
-                                            shareSheet.toggle()
-                                        } label: {
-                                            Label("Share", systemImage: "square.and.arrow.up")
-                                        }
+                                    Button {
+                                        sharePlan = item
+                                        shareSheet.toggle()
+                                    } label: {
+                                        Label("Share", systemImage: "square.and.arrow.up")
+                                    }
 
-                                        Button(role: .destructive) {
-                                            deletePlan = item
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
+                                    Button(role: .destructive) {
+                                        deletePlan = item
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button {
+                                        deletePlan = item
+                                    } label: {
+                                        Label {
+                                            Text("Delete")
+                                        } icon: {
+                                            Image(systemName: "trash")
                                         }
                                     }
+                                    .tint(.red)
+                                }
                         }
                         .onDelete(perform: planViewModel.deletePlan)
 //                        .onMove(perform: planViewModel.movePlan)
+
                     }
                     .refreshable {
                         self.planViewModel.getItems()
