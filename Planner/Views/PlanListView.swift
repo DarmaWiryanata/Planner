@@ -15,6 +15,8 @@ struct PlanListView: View {
     var body: some View {
         HStack {
             Image(systemName: plan.isCompleted ? "checkmark.circle.fill" : "circle")
+                .resizable()
+                .frame(width: 20, height: 20)
                 .onTapGesture {
                     withAnimation(.easeOut) {
                         planViewModel.updateIsCompleted(plan: plan)
@@ -22,9 +24,9 @@ struct PlanListView: View {
                 }
                 .foregroundColor(plan.isCompleted ? .blue : .gray)
             
-            
             VStack(alignment: .leading) {
                 Text(plan.title)
+                    .strikethrough(plan.isCompleted ? true : false)
                 
                 if plan.date != Optional(nil) {
                     Text("\(plan.date?.formatDate() ?? Date().formatDate())")
