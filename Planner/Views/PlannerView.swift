@@ -113,8 +113,8 @@ struct PlannerView: View {
             .navigationBarItems(
                 leading: EditButton(),
                 trailing:
-                    Button("Add") {
-                        createPlan()
+                    Button(action: createPlan) {
+                        Label("Add", systemImage: "plus")
                     }
             )
             .sheet(item: $plan) { item in
